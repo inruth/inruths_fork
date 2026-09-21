@@ -1,0 +1,46 @@
+Here is the cleaned-up version of your journal, written in a straightforward, developer-like tone without the usual AI fluff. You can copy and paste this directly:
+
+Video submission: https://youtu.be/A8xwoXhPBoU
+
+Journal Logs
+Sep 21 2026:
+
+Setup:
+I usually use Jazzy and Isaac Sim, so I didn't have Humble and Gazebo installed locally. I wrote a Dockerfile for a basic Humble + Gazebo environment, built the container, made it persistent, and set up a bash alias for it. Forked the assignment repo, ran colcon build, and hit the first bug.
+
+Error 1 (Deliberate):
+The build failed on testbed_description due to a syntax error.
+Fix: Opened testbed_description/CMakeLists.txt and changed ament_package to ament_package(). Rebuilt successfully.
+
+Error 2 (Deliberate):
+Tried running the simulation with ros2 launch testbed_bringup testbed_full_bringup.launch.py and it threw an "executable not found on PATH" error.
+Fix: This was a missing dependency. Fixed it by installing ros-humble-xacro.
+
+Navigation Package Setup:
+Created the new package: ros2 pkg create testbed_navigation --build-type ament_cmake.
+Set up the config, launch, and maps directories.
+Updated testbed_navigation/CMakeLists.txt to include the install(DIRECTORY ...) rules for those folders.
+Wrote the map_loader.launch.py file.
+
+Error 3 (Deliberate):
+Launched the map loader and the map_server crashed, complaining about a bad file path in the install directory.
+Fix: The maps folder wasn't being copied during the build. Added maps to the install(DIRECTORY ...) block in testbed_bringup/CMakeLists.txt.
+
+Error 4 (Deliberate):
+Ran the map loader again and got a Magick error about failing to load the image file.
+Fix: The testbed_world.yaml file had a dummy path. Changed image: wrong_path_testbed_world.pgm to image: testbed_world.pgm.
+
+Localization:
+Wrote the AMCL parameter config and the localization launch file.
+Ran the sim, map server, and AMCL nodes. AMCL was waiting for an initial pose. Changed the RViz fixed frame to "map" to set it.
+
+Error 5 (Environment/Hardware):
+RViz completely froze/crashed when I gave it the 2D initial pose. Realized it was a Docker hardware limitation since it was running on CPU rendering.
+Fix: Killed the container and spun up a new one using the --gpus all flag and NVIDIA runtime arguments. Once it had access to the RTX 4060, RViz handled the particle cloud rendering without crashing and localization worked perfectly.
+
+Navigation:
+Copied the default Nav2 parameters (/opt/ros/humble/share/nav2_bringup/params/nav2_params.yaml) into my config directory and set use_sim_time to true.
+Wrote the main navigation.launch.py file to bring up the controller, planner, behaviors, and bt_navigator.
+Launched the full stack, set a 2D Goal Pose in RViz, and the rover successfully drove to the target area in Gazebo.
+
+Basic evaluation criteria met. Next steps: tune the Nav2 parameters to improve pathing and obstacle avoidance.
