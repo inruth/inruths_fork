@@ -12,3 +12,11 @@ amcl:
     max_particles: 2000
     min_particles: 500
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
+
+    #set initial pose from gazebo sim
+    set_initial_pose: true
+    initial_pose:
+      x: 0.0
+      y: 5.0
+      z: 0.0
+      yaw: 0.0
