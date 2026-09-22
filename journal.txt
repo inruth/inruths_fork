@@ -45,12 +45,12 @@ Basic evaluation criteria met. Next steps: tune the Nav2 parameters to improve p
 
 Sept 22 2026:
 
-tried to set up a master launch file at testbed_bringup to launch the entire setup automatically without typing in 4 seperate launch commands in 4 windows for 4 nodes...
+Master Launch Setup:
+Tried to set up a master launch file (master.launch.py) in testbed_bringup to launch the entire setup automatically, avoiding the need to type four separate launch commands in four different windows.
 
-made the master file, the nodes werent launch correctly rviz was crashing without any standard error messages 
+Error 6 (Synchronization):
+The master file ran, but the nodes weren't launching correctly. RViz was crashing and freezing without outputting any standard error messages.
+Fix: Wrote a separate function to sequentially launch each node using event triggers. It now waits for Gazebo to fully load before starting the Nav2 stack, ensuring it boots safely without crashing on both fast and slow systems.
 
-wrote a sepeate function to sequentially launch each node so that it may launch properly without crashing in a fast system or a slower system.
-
-launched...
-
-needed to set up initial pose manually..
+Localization:
+Launched the updated master file. It booted smoothly, but I noticed I still needed to set up the initial pose manually in RViz...
