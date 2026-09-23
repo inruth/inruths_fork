@@ -17,11 +17,20 @@ Follow these steps to build the packages and start the simulation environment.
 ### 1. clone the git https://github.com/inruth/inruths_fork
 Clone the project into your ROS2 workspace's source directory.
 ```bash
-# Navigate to your workspace source directory
+# Navigate to the workspace source directory
 cd ~/assignment_ws/src
 
-# Clone the repository (replace with actual URL)
-git clone <repository_url> inruths_fork
+# Clone the repository
+git clone https://github.com/inruth/inruths_fork/edit/main/README.md
 
 # Return to the workspace root
 cd ~/assignment_ws
+
+#initialize your main ros2 installation
+
+#run the build commands
+colcon build
+source install/setup.bash
+
+#run the simulation
+ros2 launch testbed_bringup master.launch.py
