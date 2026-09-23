@@ -21,7 +21,7 @@ Clone the project into your ROS2 workspace's source directory.
 cd ~/assignment_ws/src
 
 # Clone the repository
-git clone https://github.com/inruth/inruths_fork/edit/main/README.md
+git clone https://github.com/inruth/inruths_fork
 
 # Return to the workspace root
 cd ~/assignment_ws
