@@ -53,4 +53,28 @@ The master file ran, but the nodes weren't launching correctly. RViz was crashin
 Fix: Wrote a separate function to sequentially launch each node using event triggers. It now waits for Gazebo to fully load before starting the Nav2 stack, ensuring it boots safely without crashing on both fast and slow systems.
 
 Localization:
-Launched the updated master file. It booted smoothly, but I noticed I still needed to set up the initial pose manually in RViz...
+Launched the updated master file. It booted smoothly, but I noticed I still needed to set up the initial pose manually in RViz.
+
+Sept 23 2026:
+
+Error 7 (Build / Installation):
+colcon build failed on testbed_navigation, stating it couldn't find the maps directory to install.
+Fix: Simply created an empty maps directory in the source tree so CMake could find it and proceed with the build.
+
+RViz & Launch Automation:
+Created a custom RViz config (nav.rviz) to automatically load the map frame and global costmap, and updated CMakeLists.txt to install it. 
+To fully automate the boot process, I hardcoded the initial_pose coordinates directly into nav2_params.yaml under the AMCL node parameters.
+
+Error 8 (Race Condition & TF Frames):
+Using the new nav.rviz file exposed a timing gap. RViz booted instantly and crashed with queue errors trying to find the map frame, which AMCL hadn't broadcasted yet due to the intentional timers in master.launch.py.
+Fix: Completely removed RViz from the initial bringup file. Moved the RViz launch execution directly into master.launch.py and placed it on a 6-second timer at the very end of the sequence, allowing AMCL to initialize the map frame first. The entire stack now boots automatically with zero manual intervention and zero terminal errors.
+
+Error 9 (Docker GUI / Clean Build):
+When simulating a clean workspace build, RViz and Gazebo crashed with GLXContext and OpenGL errors. The container lacked the necessary X11 display bridges.
+Fix: Updated the Docker container start arguments to mount the host X11 socket (-v /tmp/.X11-unix:/tmp/.X11-unix:rw) and disable shared memory (-e QT_X11_NO_MITSHM=1).
+
+Costmap Tuning (Narrow Spaces):
+Observed that the local costmap was aggressively inflating the walls around the small door, causing the laser scan to mistakenly block the opening. Adjusted nav2_params.yaml to thin the inflation gradient:
+- Global Costmap: inflation_radius to 0.4, cost_scaling_factor to 10.
+- Local Costmap: inflation_radius to 0.2, cost_scaling_factor to 10.
+This reduced the severity of the local costmap blocking the door, making the pathing much better, though it isn't completely perfect yet. Committing this stable version before pushing further Nav2 edits for the ERIC Robotics project.

@@ -19,8 +19,21 @@ def generate_launch_description():
     sim_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(bringup_dir, 'launch', 'testbed_full_bringup.launch.py'))
     )
-    
-    # 2. Smart Check: Listen for the first LiDAR ping
+
+    #rviz
+
+    rviz_config_dir = os.path.join(
+    get_package_share_directory('testbed_navigation'),
+    'rviz',
+    'nav.rviz'
+    )
+
+    rviz_launch = ExecuteProcess(
+    cmd=['ros2', 'run', 'rviz2', 'rviz2', '-d', rviz_config_dir],
+    output='screen'
+    )
+
+    # 2. Listen for the first LiDAR ping
     wait_for_sim = ExecuteProcess(
         cmd=['ros2', 'topic', 'echo', '--once', '/scan'],
         output='log'
@@ -44,7 +57,8 @@ def generate_launch_description():
             on_exit=[
                 map_launch,
                 TimerAction(period=2.0, actions=[loc_launch]),
-                TimerAction(period=4.0, actions=[nav_launch])
+                TimerAction(period=4.0, actions=[nav_launch]),
+                TimerAction(period=6.0, actions=[rviz_launch])
             ]
         )
     )
