@@ -1,4 +1,4 @@
-# 🤖 ERIC Robotics: Autonomous Navigation Assignment
+# 🤖 ERIC Robotics: Navigation Simulation Assignment
 
 ![ROS2](https://img.shields.io/badge/ros2-Humble-blue.svg) ![Gazebo](https://img.shields.io/badge/gazebo-Ignition-orange.svg)
 
@@ -12,9 +12,9 @@
 
 ## Instructions to get started
 
-Follow these steps to build the packages and start the simulation environment[cite: 2].
+Follow these steps to build the packages and start the simulation environment.
 
-### 1. clone the git[cite: 2]
+### 1. clone the git https://github.com/inruth/inruths_fork
 Clone the project into your ROS2 workspace's source directory.
 ```bash
 # Navigate to your workspace source directory
