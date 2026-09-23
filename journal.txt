@@ -85,14 +85,16 @@ To resolve the navigation problem through the small door, I considered omitting 
 
 Error 10 (Sensor Configuration / Deliberate):
 When comparing the Gazebo and RViz environments, the laser scan was detecting an obstacle (red line) in empty space before reaching the actual wall, creating a phantom barrier that the rover couldn't pass. I hypothesized this was due to either manipulated scaling values on the laser scan, an invisible collision object in Gazebo, or a fundamental Nav2 issue.
-Fix: I first checked the view collisions in Gazebo, which appeared normal. I then verified the transform tree using ros2 run tf2_tools view_frames, which was also normal. Finally, I checked the lidar mounting angle and the Gazebo lidar plugin parameters. The root cause was an artificially low max range in the lidar plugin configuration:
+Fix: I first checked the view collisions in Gazebo, which appeared normal. I then verified the transform tree using ros2 run tf2_tools view_frames, which was also normal. Finally, I checked the lidar mounting angle and the Gazebo lidar plugin parameters. The root cause was an artificially low max range in the lidar plugin configuration.
 
 <range>
   <min>0.10</min>
-  <max>1.5</max>
+  <max>1.5</max> ...changed to 12.0
   <resolution>0.01</resolution>
 </range>
 
 Because it was capped at 1.5m, the sensor was registering a solid object at that exact distance even in empty space. This wasn't an issue for the large door, but it completely blocked the small door. I changed the <max> value to 12.0 meters to reflect real-world lidars. The local costmap now maps correctly, and the rover can navigate properly through the small doors. 
+
+Engineering Justification: While it is technically possible to write custom ROS 2 filter nodes to process the laser scan and ignore these artificial max-range "phantom" readings, developing robust workarounds for this specific simulator quirk would demand significant development time and pull focus from the core Nav2 implementation. Because physical lidars do not typically return solid obstacles at their maximum threshold in open space, updating the Gazebo plugin configuration to mirror realistic hardware constraints was determined to be the most practical and realistic engineering solution.
 
 Assignment complete.
