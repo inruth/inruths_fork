@@ -1,5 +1,27 @@
-**Submitted by:** Visruth K 
-**Email:** visruthkelambeth@outlook.com 
-**Phone:** +91 7603912785  
+# 🤖 ERIC Robotics: Autonomous Navigation Assignment
 
-*Note: Please see the `journal.txt` file in this repository for the video demonstration link and the detailed breakdown of the fixed bugs.*
+![ROS2](https://img.shields.io/badge/ros2-Humble-blue.svg) ![Gazebo](https://img.shields.io/badge/gazebo-Ignition-orange.svg)
+
+**Submitted by:** Visruth K  
+📧 **Email:** visruthkelambeth@outlook.com  
+📱 **Phone:** +91 7603912785  
+
+> ⚠️ **Note:** Please see the `journal.txt` file in this repository for the video demonstration link and the detailed breakdown of the fixed bugs.
+
+---
+
+## Instructions to get started
+
+Follow these steps to build the packages and start the simulation environment[cite: 2].
+
+### 1. clone the git[cite: 2]
+Clone the project into your ROS2 workspace's source directory.
+```bash
+# Navigate to your workspace source directory
+cd ~/assignment_ws/src
+
+# Clone the repository (replace with actual URL)
+git clone <repository_url> inruths_fork
+
+# Return to the workspace root
+cd ~/assignment_ws
