@@ -14,8 +14,6 @@
 
 Follow these steps to build the packages and start the simulation environment.
 
-### 1. clone the git https://github.com/inruth/inruths_fork
-Clone the project into your ROS2 workspace's source directory.
 ```bash
 # Navigate to the workspace source directory
 cd ~/assignment_ws/src
